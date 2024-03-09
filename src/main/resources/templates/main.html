@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<nav class="bg-white px-4 py-2 flex items-center justify-between">
+    <div class="flex items-center space-x-4">
+        <img
+                src="/placeholder.svg"
+                alt="Logo"
+                class="h-10 w-10"
+                width="40"
+                height="40"
+                style="aspect-ratio:40/40;object-fit:cover"
+        />
+        <span class="font-bold text-xl">EduClever</span>
+        <span class="text-sm text-gray-500">Education WP Theme</span>
+    </div>
+    <div class="flex items-center space-x-6">
+        <a class="text-gray-700 hover:text-gray-900" href="#" rel="ugc">
+            HOME
+        </a>
+        <a class="text-gray-700 hover:text-gray-900" href="#" rel="ugc">
+            FAQ
+        </a>
+        <a class="text-gray-700 hover:text-gray-900" href="#" rel="ugc">
+            About
+        </a>
+        <a class="text-gray-700 hover:text-gray-900" href="#" rel="ugc">
+            Others
+        <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="text-gray-700 h-6 w-6"
+        >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+        </svg>
+        <button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 bg-green-700 text-white px-4 py-2 rounded-full">
+            BE TEACHER
+        </button>
+    </div>
+</nav>
+<section class="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+    <div class="container px-4 md:px-6" >
+        <div class="flex flex-col items-center space-y-4 text-center">
+            <div class="space-y-2">
+                <h1 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
+                    The original Website Carbon calculator
+                </h1>
+                <p class="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+                    Estimate your web page carbon footprint:
+                </p>
+            </div>
+            <div class="w-full max-w-sm space-y-2" >
+                <form class="flex space-x-2" th:action th:object="${Url}" method="post">
+                    <input
+                            type="url"
+                            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 max-w-lg flex-1"
+                            placeholder="Enter your url"
+                            id="url"
+                            th:field="*{url}"
+                    />
+                    <button
+                            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+                            type="submit"
+                    >
+                        Calculation
+                    </button>
+                </form>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                    Sign up to get notified when we launch.
+                    <a class="underline underline-offset-2" href="#" rel="ugc">
+                        Terms &amp; Conditions
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
