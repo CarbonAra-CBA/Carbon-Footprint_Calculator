@@ -6,8 +6,10 @@ import lombok.Data;
 public class Url {
     private Long id;
     private String url;
-    private Integer initialSize;
-    private Integer htmlSize;
+    private long initialSize;
+    private long htmlSize;
+    private long cssSize;
+    private long jsSize;
     private String date;
-    private Long quantity; // Carbon quantity.
+    private long quantity; // Carbon quantity.
 }
