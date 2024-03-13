@@ -2,9 +2,51 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Carbon Calculator</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<p th:object=""></p>
+<div class="bg-primary min-h-screen text-white p-8">
+    <header class="flex justify-between items-center mb-12">
+        <h1 class="font-bold text-2xl">Website Carbon Calculator</h1>
+        <nav>
+            <ul class="flex space-x-4">
+                <li><a class="hover-underline" href="#">How does it work?</a></li>
+                <li><a class="hover-underline" href="#">FAQ</a></li>
+                <li><a class="hover-underline" href="#">Get the badge!</a></li>
+                <li><a class="hover-underline" href="#">API</a></li>
+                <li><a class="hover-underline" href="#">Consultancy</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="max-w-4xl mx-auto bg-secondary rounded-3xl p-8">
+        <div class="flex justify-between items-start">
+            <div>
+                <p class="text-sm mb-1"  th:text="${domain}">Website carbon results for: naver.com</p>
+                <h2 class="font-bold text-6xl mb-4">Oh no! This web page achieves a carbon rating of F</h2>
+                <p class="mb-6">This is dirtier than 81% of all web pages globally</p>
+                <div class="flex items-center mb-6">
+                    <div class="flex-1 h-2 bg-danger rounded-full relative">
+                        <span class="absolute right-0 bg-blue-400 h-2 w-6 rounded-full"></span>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-danger flex items-center justify-center ml-2">
+                        <span>F</span>
+                    </div>
+                </div>
+                <p class="text-sm mb-6">Learn about our rating system</p>
+                <p class="text-sm">This page was last tested on 28 Dec, 2023. <a class="underline" href="#">Test again</a></p>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="bg-danger rounded-full w-24 h-24 flex items-center justify-center mb-4">
+                    <span class="text-6xl font-bold">F</span>
+                </div>
+                <button class="button">Copy URL</button>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>

@@ -10,23 +10,28 @@ import java.util.*;
 @Repository
 public class UrlRepository {
 
-    private static final Map<Long, Url> store = new HashMap<>();
+    private static final Map<String, Url> store = new HashMap<>();
     private static long sequence = 0L;
     private static final long THREE_MONTHS_IN_MILLIS = 7779456000L;
 
-    public Url save(Url url,String domain, long htmlsize, long jssize,long csssize) {
+    public Url save(Url url,String domain, long htmlsize, long jssize,long csssize, long totalSize) {
         url.setId(++sequence);
         url.setUrl(domain);
         url.setHtmlSize(htmlsize);
         url.setJsSize(jssize);
         url.setCssSize(csssize);
+        url.setTotalSize(totalSize);
 
-        store.put(url.getId(), url);
+        store.put(url.getUrl(), url);
         return url;
     }
 
-    public Url findById(Long urlId) {
-        return store.get(urlId);
+    public Url findById(Long url) {
+        return store.get(url);
+    }
+
+    public Url findByUrl(Long url) {
+        return store.get(url);
     }
 
     public List<Url> findAll() {
@@ -58,4 +63,6 @@ public class UrlRepository {
     public void clearStore() {
         store.clear();
     }
+
+
 }

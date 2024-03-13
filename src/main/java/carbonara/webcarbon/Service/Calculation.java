@@ -1,5 +1,6 @@
 package carbonara.webcarbon.Service;
 
+// 나중에 계산로직만 따로 여기다 놓을까 생각중
 public interface Calculation {
 
     // DB_check() 체크

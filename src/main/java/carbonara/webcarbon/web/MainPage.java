@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.Proxy;
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
 
@@ -26,34 +27,16 @@ public class MainPage {
 
     private final UrlRepository urlRepository;
 
-    @GetMapping()
+    @GetMapping()                                                     // 현재 입력은 http://www.naver.com 으로 해야합니다.
     public String main(@ModelAttribute("Url") Url url, Model model) {
-        model.addAttribute("url", url);
+        model.addAttribute("url", url);                     // TO do) http://www.naver.com 입력을 naver.com 으로 해도 되게 해야합니다.!..
         return "main";
     }
 
-    private void calculate(String urldomain,Url url) throws IOException {
-        crolling(urldomain,url);
-    }
-
-    private static long getResourceSize(String resourceUrl) {
-        try {
-            URL url = new URL(resourceUrl); // Connect;
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection(); // URL커넥션 반환 //Return URl Connection
-
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0"); // 유저 세팅을 해야 403 에러를 피할 수 있음.// Setting User-Agent is important to avoid HTTP 403 errors in some websites
-            connection.setRequestMethod("HEAD"); // 문서의 헤더 정보만 요청함 // Request Header info
-            connection.connect();
-            return connection.getContentLengthLong(); // 콘텐츠 길이 리턴. 단, 헤더 길이에 정보가 없으면 -1이 리턴됨 // Returns the file size //
-        } catch (IOException e) {
-            System.err.println("Error fetching resource size for: " + resourceUrl);
-            return 0;
-        }
-    }
-
-    private void crolling(String urldomain,Url url) throws IOException {
+    private int calculate(String urldomain,Url url) throws IOException {
 
         try {
+            log.info("log ={}",urldomain);
             Document doc = Jsoup.connect(String.valueOf(urldomain)).get(); // 연결 및 문서 가져오기 // Connect and Get document
 
             // Html Bytes
@@ -80,49 +63,76 @@ public class MainPage {
                 totalCssSize += size;
             }
 
-            System.out.println("Total JS Size: " + totalJsSize + " bytes");
-            System.out.println("Total CSS Size: " + totalCssSize + " bytes");
-            System.out.println("Total HTML Size: " + totalHtmlSize + " bytes");
+            // 추가해야함 : 이미지
 
-            urlRepository.save(url, urldomain ,totalHtmlSize, totalJsSize, totalCssSize);
+            // 추가 해야함 : 동영상
+
+            System.out.println("Total JS Size: " + totalJsSize/1024 + " kb");
+            System.out.println("Total CSS Size: " + totalCssSize/1024 + " kb");
+            System.out.println("Total HTML Size: " + totalHtmlSize/1024 + " kb");
+
+            long totalSize = (totalHtmlSize / 1024) + (totalJsSize / 1024) + (totalCssSize / 1024);
+
+            System.out.println("TotalSize: " + totalSize +" kb");
+
+            // 추가 해야함 : 등급 함수 SetGrade()
+
+
+            urlRepository.save(url, urldomain ,totalHtmlSize/1024, totalJsSize/1024, totalCssSize/1024, totalSize);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        return 0;
     }
 
+    // TO DO & ing..) 등급 함수
+//    private long SetGrade(long totalSize) {
+//        // A+
+//
+//
+//        // A
+//
+//
+//        // B+
+//
+//
+//        // B
+//
+//
+//        //
+//    }
+
+    private static long getResourceSize(String resourceUrl) {
+        try {
+            URL url = new URL(resourceUrl); // Connect;
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection(); // URL커넥션 반환 //Return URl Connection
+
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0"); // 유저 세팅을 해야 403 에러를 피할 수 있음.// Setting User-Agent is important to avoid HTTP 403 errors in some websites
+            connection.setRequestMethod("HEAD"); // 문서의 헤더 정보만 요청함 // Request Header info
+            connection.connect();
+            return connection.getContentLengthLong(); // 콘텐츠 길이 리턴. 단, 헤더 길이에 정보가 없으면 -1이 리턴됨 // Returns the file size //
+        } catch (IOException e) {
+            System.err.println("Error fetching resource size for: " + resourceUrl);
+            return 0;
+        }
+    }
 
     @PostMapping("/submit")
     public String processUrl(Model model, @ModelAttribute("Url") Url url, RedirectAttributes redirectAttributes,
                              HttpSession session) {
-        // 1. 로딩중과 계산&크롤링을 비동기처리
-        CompletableFuture<Integer> futureResult = CompletableFuture.supplyAsync(() -> {
-            try {
-                return calculate(url.getUrl(),url);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        futureResult.thenApply(result -> {
-                model.addAttribute("result", result);
 
-            // 2. 결과 페이지로 리다이렉션
-            String savedUrl = url.getUrl();
-            return "redirect:/result";
-        });
-        return "loading";
+        String urlDomain = url.getUrl();
+        session.setAttribute("domain",urlDomain);
 
-        // 1. Url 객체 생성 및 저장
-        // save 전에 이미 있는 지 check
-//        urlCheck()
-        // 로딩중..
-
-//        Url savedUrl = urlRepository.save();
-
-        // Crolling
-
-        // Model 에 담아서 Result에 보낸다.
+        try {
+            calculate(urlDomain, url);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return "redirect:/result";
 
     }
 
@@ -132,21 +142,14 @@ public class MainPage {
     }
 
     @GetMapping("/result")
-    public String result(ModelAttribute("Url") Url url, Model model) {
+    public String result(Model model,HttpSession session) {
 
+        // url 링크 세션 전송 및 모델 생성
+        model.addAttribute("domain", session.getAttribute("domain"));
+        log.info((String) session.getAttribute("domain"));
+
+        return "result";
     }
 
 
-//    @GetMapping("/result/${url}")
-//    public String result(ModelAttribute("Url") Url url) {
-//
-//        // Sass
-////        return "result";
-//    }
-
-
-//    @PostMapping("/result")
-//    public String result2() {
-//
-//    }
 }

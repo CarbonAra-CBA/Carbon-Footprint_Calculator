@@ -10,36 +10,11 @@ import javax.lang.model.util.Elements;
 import javax.swing.text.Document;
 import java.io.IOException;
 
+
+// 나중에 계산로직만 따로 여기다 놓을까 생각중
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class CarbonCalcul {
-//
-//    public Integer calc(String url) throws IOException {
-////      String url = "https://example.com"; // Replace with your website's URL
-//
-//        Connection conn = Jsoup.connect(url);
-//        Document doc= (Document) conn.get();
-//
-//        // html size
-//        String html = doc.toString();
-//        int kb = html.length() / 1024;
-//
-//        // img
-//
-//        // css
-//
-//        // js
-//
-//
-//
-//
-//
-//    }
 
-
-    public void croll() {
-
-
-    }
 }
