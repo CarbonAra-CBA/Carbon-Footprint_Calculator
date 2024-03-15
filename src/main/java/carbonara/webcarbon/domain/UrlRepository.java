@@ -14,14 +14,14 @@ public class UrlRepository {
     private static long sequence = 0L;
     private static final long THREE_MONTHS_IN_MILLIS = 7779456000L;
 
-    public Url save(Url url,String domain, long htmlsize, long jssize,long csssize, long totalSize) {
+    public Url save(Url url,String domain, long htmlsize, long jssize,long csssize, long totalSize, String grade) {
         url.setId(++sequence);
         url.setUrl(domain);
         url.setHtmlSize(htmlsize);
         url.setJsSize(jssize);
         url.setCssSize(csssize);
         url.setTotalSize(totalSize);
-
+        url.setGrade(grade);
         store.put(url.getUrl(), url);
         return url;
     }
