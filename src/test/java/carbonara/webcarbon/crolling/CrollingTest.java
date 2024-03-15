@@ -20,15 +20,15 @@ import java.net.URL;
 public class CrollingTest {
 
     public static void main(String[] args) throws IOException {
-        String url = "https://www.naver.com";
+        String url = "https://www.yna.co.kr/";
         try {
             Document doc = Jsoup.connect(url).get(); // 연결 및 문서 가져오기 // Connect and Get document
 
-            // html
+            // html Test
             long totalHtmlSize = doc.html().getBytes().length;
             totalHtmlSize = totalHtmlSize/ 1024; // kb;
 
-            // JS
+            // JS Test
             Elements jsElements = doc.select("script[src]"); // 모든 JS 태그 선택// Select All JS Tag
             long totalJsSize = 0;
             for (Element element : jsElements) {
@@ -38,7 +38,7 @@ public class CrollingTest {
                 totalJsSize += size;
             }
 
-            // CSS Files
+            // CSS Test
             Elements cssElements = doc.select("link[rel='stylesheet']");
             long totalCssSize = 0;
             for (Element element : cssElements) {
@@ -48,10 +48,35 @@ public class CrollingTest {
                 totalCssSize += size;
             }
 
+            // image Test
+            Elements imageElement = doc.select("img");
+            long totalImageSize = 0;
+            for (Element image : imageElement) {
+                String src = image.attr("src");
+                long size = getResourceSize(src);
+                System.out.println("image File: " + src + "Size: " + size + "bytes");
+                totalImageSize += size;
+            }
+
+            // Video Test
+            Elements videoElement = doc.select("video");
+            long totalVideoSize = 0;
+
+            for (Element video : videoElement) {
+                String src = video.attr("src");
+                long size = getResourceSize(src);
+                System.out.println("Video File: " + src + "Size: " + size + "bytes");
+                totalVideoSize += size;
+            }
+
             System.out.println("Total JS Size: " + totalJsSize/1024 + " kb");
             System.out.println("Total CSS Size: " + totalCssSize/1024 + " kb");
             System.out.println("Total HTML Size: "+ String.valueOf(totalHtmlSize) + " kb");
+            System.out.println("Total Image Size: " + totalImageSize/1024 + " kb");
+            System.out.println("Total Video Size: " + totalVideoSize/1024 + " kb");
+
             System.out.println("ALL SIZE : " + (totalJsSize/1024 + totalCssSize/1024 + totalHtmlSize) +" kb");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
