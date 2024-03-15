@@ -48,9 +48,20 @@ public class CrollingTest {
                 totalCssSize += size;
             }
 
+            // image Test
+            Elements imageElement = doc.select("img");
+            long totalImageSize = 0;
+            for (Element image : imageElement) {
+                String src = image.attr("src");
+                long size = getResourceSize(src);
+                System.out.println("image File: " + src + "Size: " + size + "bytes");
+                totalImageSize += size;
+            }
+
             System.out.println("Total JS Size: " + totalJsSize/1024 + " kb");
             System.out.println("Total CSS Size: " + totalCssSize/1024 + " kb");
-            System.out.println("Total HTML Size: "+ String.valueOf(totalHtmlSize) + " kb");
+            System.out.println("Total HTML Size: "+ totalHtmlSize/1024 + " kb");
+            System.out.println("Total Image Size: " + totalImageSize/1024 + " kb");
             System.out.println("ALL SIZE : " + (totalJsSize/1024 + totalCssSize/1024 + totalHtmlSize) +" kb");
         } catch (IOException e) {
             e.printStackTrace();

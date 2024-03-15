@@ -1,14 +1,24 @@
 package carbonara.webcarbon.crolling;
 
 import lombok.extern.slf4j.Slf4j;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.w3c.dom.Document;
+
+import java.time.Duration;
+import java.util.List;
+
 
 @Slf4j
 public class CrollingTest_Selenium {
     public static void main(String[] args) {
-        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "driver/chromedriver.exe");
+
         WebDriver driver = new ChromeDriver();
 
         try {
@@ -27,7 +37,8 @@ public class CrollingTest_Selenium {
                             "return totalBytes;");
 
             System.out.println("Total size of all resources: " + totalBytes + " bytes");
-        } finally {
+        }
+        finally {
             // WebDriver 종료
             driver.quit();
         }
