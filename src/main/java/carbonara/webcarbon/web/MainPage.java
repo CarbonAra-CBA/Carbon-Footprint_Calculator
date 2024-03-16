@@ -9,6 +9,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -75,21 +78,50 @@ public class MainPage {
                 totalImageSize += size;
             }
 
+            System.setProperty("webdriver.chrome.driver", "driver/chromedriver.exe");
+
+            WebDriver driver = new ChromeDriver();
+
+            long selenium_totalSize = 0;
+            try {
+                // 웹 페이지 로드
+                driver.get("https://www.naver.com");
+
+                // JavaScript 실행기
+                JavascriptExecutor js = (JavascriptExecutor) driver;
+
+                // 페이지 내 모든 리소스의 크기를 계산하는 JavaScript 코드 실행
+                selenium_totalSize = (Long) js.executeScript(
+                        "var totalBytes = 0, resources = window.performance.getEntriesByType('resource');" +
+                                "resources.forEach(function(resource) {" +
+                                "   totalBytes += resource.transferSize;" +
+                                "});" +
+                                "return totalBytes;");
+
+                System.out.println("[Selenium] Total size of all resources: " + selenium_totalSize + " bytes");
+
+            }
+            finally {
+                // WebDriver 종료
+                driver.quit();
+            }
+
             // 추가해야함 : 이미지
             // 추가 해야함 : 동영상
 
-            System.out.println("Total JS Size: " + totalJsSize/1024 + " kb");
-            System.out.println("Total CSS Size: " + totalCssSize/1024 + " kb");
-            System.out.println("Total HTML Size: " + totalHtmlSize/1024 + " kb");
+            System.out.println("[jsoup] Total JS Size: " + totalJsSize/1024 + " kb");
+            System.out.println("[jsoup] Total CSS Size: " + totalCssSize/1024 + " kb");
+            System.out.println("[jsoup] Total HTML Size: " + totalHtmlSize/1024 + " kb");
 
             long totalSize = (totalHtmlSize / 1024) + (totalJsSize / 1024) + (totalCssSize / 1024) + (totalImageSize/1024);
 
-            System.out.println("TotalSize: " + totalSize +" kb");
-
+            System.out.println("[jsoup] TotalSize: " + totalSize + " kb");
+            System.out.println("[selenium] TotalSize: " + selenium_totalSize/1024 +"kb");
             // 등급 평가
-            String grade = setGrade(totalSize);
+            String jsoup_grade = setGrade(totalSize);
+            String seleni_grade = setGrade(selenium_totalSize/1024);
 
-            urlRepository.save(url, urldomain ,totalHtmlSize/1024, totalJsSize/1024, totalCssSize/1024, totalSize ,grade);
+            urlRepository.save(url, urldomain ,totalHtmlSize/1024, totalJsSize/1024, totalCssSize/1024, totalSize ,jsoup_grade);
 
         } catch (IOException e) {
             e.printStackTrace();
