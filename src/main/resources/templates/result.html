@@ -23,9 +23,20 @@
     <main class="max-w-4xl mx-auto bg-secondary rounded-3xl p-8">
         <div class="flex justify-between items-start">
             <div>
-                <p class="text-sm mb-1"  th:text="${domain}">Website carbon results for: naver.com</p>
-                <!-- 조건문을 통해서 A이면 ,~ 특정 문장, B이면 특정 문장, C이면.. 특정 문장.. 매핑 시켜야함 -->
-                <h2 class="font-bold text-6xl mb-4">Oh no! This web page achieves a carbon rating of F</h2>
+                <p class="text-sm mb-1"  th:text="${domain}">Website carbon results for: hello</p>
+<!--                &lt;!&ndash; 조건문을 통해서 A이면 ,~ 특정 문장, B이면 특정 문장, C이면.. 특정 문장.. 매핑 시켜야함 &ndash;&gt;-->
+<!--                <h2 class="font-bold text-6xl mb-4" th:switch="${domain}">Oh no! This web page achieves a carbon rating of F-->
+<!--                </h2>-->
+                <span th:switch="${grade}">
+                    <h2 class="font-bold text-6xl mb-4" th:case="'A+'">Excellent! This web page achieves a carbon rating of A+, setting a great example for eco-friendly web design. </h2>
+                    <h2 class="font-bold text-6xl mb-4" th:case="'A'">Great job! This web page has a carbon rating of A, demonstrating a strong commitment to reducing its environmental impact. </h2>
+                    <h2 class="font-bold text-6xl mb-4" th:case="'B'">Well done! Your web page has earned a carbon rating of B, showing good eco-friendly practices. </h2>
+                    <h2 class="font-bold text-6xl mb-4" th:case="'C'">Good effort! This web page has a carbon rating of C. There's room for improvement, but you're on the right track. </h2>
+                    <h2 class="font-bold text-6xl mb-4" th:case="'D'">A decent start! This web page has a carbon rating of D. Consider optimizing further to reduce your carbon footprint. </h2>
+                    <h2 class="font-bold text-6xl mb-4" th:case="'E'">Needs improvement. This web page has a carbon rating of E. Look into more eco-friendly options to enhance your rating. </h2>
+                    <h2 class="font-bold text-6xl mb-4" th:case="'F'">Oh no! This web page achieves a carbon rating of F. It's time to rethink and implement greener web solutions. </h2>
+                </span>
+
                 <p class="mb-6">This is dirtier than 81% of all web pages globally</p>
                 <div class="flex items-center mb-6">
                     <div class="flex-1 h-2 bg-danger rounded-full relative">

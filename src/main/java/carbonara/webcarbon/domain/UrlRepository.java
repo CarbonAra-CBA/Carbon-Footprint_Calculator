@@ -26,11 +26,11 @@ public class UrlRepository {
         return url;
     }
 
-    public Url findById(Long url) {
+    public Url findById(String url) {
         return store.get(url);
     }
 
-    public Url findByUrl(Long url) {
+    public Url findByUrl(String url) {
         return store.get(url);
     }
 

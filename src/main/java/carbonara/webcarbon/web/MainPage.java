@@ -156,12 +156,13 @@ public class MainPage {
         String domain = (String) session.getAttribute("domain");
         model.addAttribute("domain", session.getAttribute("domain"));
         log.info((String) session.getAttribute("domain"));
-        Url byUrl = urlRepository.findByUrl(Long.valueOf(domain));
+
+        Url byUrl = urlRepository.findByUrl(domain);
         // 계산
         String grade = byUrl.getGrade();
+        log.info("grade={}", grade);
         model.addAttribute("grade", grade);
         return "result";
     }
-
 
 }
