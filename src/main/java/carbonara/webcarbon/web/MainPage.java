@@ -63,22 +63,33 @@ public class MainPage {
                 totalCssSize += size;
             }
 
-            // 추가해야함 : 이미지
+            Elements imageElement = doc.select("img");
+            long totalImageSize = 0;
+            for (Element image : imageElement) {
+                String src = image.absUrl("src");
+                if (src.startsWith("//")) {
+                    src = "https:" + src;
+                }
+                long size = getResourceSize(src);
+                System.out.println("image File: " + src + "Size: " + size + "bytes");
+                totalImageSize += size;
+            }
 
+            // 추가해야함 : 이미지
             // 추가 해야함 : 동영상
 
             System.out.println("Total JS Size: " + totalJsSize/1024 + " kb");
             System.out.println("Total CSS Size: " + totalCssSize/1024 + " kb");
             System.out.println("Total HTML Size: " + totalHtmlSize/1024 + " kb");
 
-            long totalSize = (totalHtmlSize / 1024) + (totalJsSize / 1024) + (totalCssSize / 1024);
+            long totalSize = (totalHtmlSize / 1024) + (totalJsSize / 1024) + (totalCssSize / 1024) + (totalImageSize/1024);
 
             System.out.println("TotalSize: " + totalSize +" kb");
 
-            // 추가 해야함 : 등급 함수 SetGrade()
+            // 등급 평가
+            String grade = setGrade(totalSize);
 
-
-            urlRepository.save(url, urldomain ,totalHtmlSize/1024, totalJsSize/1024, totalCssSize/1024, totalSize);
+            urlRepository.save(url, urldomain ,totalHtmlSize/1024, totalJsSize/1024, totalCssSize/1024, totalSize ,grade);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,22 +98,19 @@ public class MainPage {
         return 0;
     }
 
-    // TO DO & ing..) 등급 함수
-//    private long SetGrade(long totalSize) {
-//        // A+
-//
-//
-//        // A
-//
-//
-//        // B+
-//
-//
-//        // B
-//
-//
-//        //
-//    }
+
+
+    // 등급 평가 함수
+    private String setGrade(long totalsize) {
+        if (totalsize <= 272.51) return "A+";
+        else if (totalsize <=531.15) return "A";
+        else if (totalsize <=975.85) return "B";
+        else if (totalsize <= 1410.39) return "C";
+        else if (totalsize <= 1875.01) return "D";
+        else if (totalsize <= 2419.56) return "E";
+        else if (totalsize >= 2419.57) return "F";
+        return null;
+    }
 
     private static long getResourceSize(String resourceUrl) {
         try {
@@ -145,9 +153,13 @@ public class MainPage {
     public String result(Model model,HttpSession session) {
 
         // url 링크 세션 전송 및 모델 생성
+        String domain = (String) session.getAttribute("domain");
         model.addAttribute("domain", session.getAttribute("domain"));
         log.info((String) session.getAttribute("domain"));
-
+        Url byUrl = urlRepository.findByUrl(Long.valueOf(domain));
+        // 계산
+        String grade = byUrl.getGrade();
+        model.addAttribute("grade", grade);
         return "result";
     }
 

@@ -10,6 +10,7 @@ public class Url {
     private long cssSize;
     private long jsSize;
     private long totalSize;
+    private String grade;
 
     /* 추가해야할 요소들 */
     private long imageSize;

@@ -24,6 +24,7 @@
         <div class="flex justify-between items-start">
             <div>
                 <p class="text-sm mb-1"  th:text="${domain}">Website carbon results for: naver.com</p>
+                <!-- 조건문을 통해서 A이면 ,~ 특정 문장, B이면 특정 문장, C이면.. 특정 문장.. 매핑 시켜야함 -->
                 <h2 class="font-bold text-6xl mb-4">Oh no! This web page achieves a carbon rating of F</h2>
                 <p class="mb-6">This is dirtier than 81% of all web pages globally</p>
                 <div class="flex items-center mb-6">
@@ -39,9 +40,9 @@
             </div>
             <div class="flex flex-col items-center">
                 <div class="bg-danger rounded-full w-24 h-24 flex items-center justify-center mb-4">
-                    <span class="text-6xl font-bold">F</span>
+                    <span class="text-6xl font-bold" th:text="${grade}">F</span>
                 </div>
-                <button class="button">Copy URL</button>
+<!--                <button class="button">Copy URL</button>-->
             </div>
         </div>
     </main>
