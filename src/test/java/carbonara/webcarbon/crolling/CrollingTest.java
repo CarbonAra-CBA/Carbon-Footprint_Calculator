@@ -61,6 +61,7 @@ public class CrollingTest {
 //                System.out.println("image File: " + src + "Size: " + size + "bytes");
 //                totalImageSize += size;
 //            }
+            }
 
             // image v2 //  (이미지 소스를 받기 위해서) 상대경로 -> 절대경로 사용.
             for (Element image : imageElement) {
