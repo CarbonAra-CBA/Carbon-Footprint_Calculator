@@ -64,8 +64,9 @@
             </div>
             <div class="w-full max-w-sm space-y-2" >
                 <form class="flex space-x-2" th:action="@{/submit}" th:object="${Url}" method="post">
+                    <!-- type를 url 형식에서 text로 바꿈 -->
                     <input
-                            type="url"
+                            type="text"
                             class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 max-w-lg flex-1"
                             placeholder="Enter your url"
                             id="url"

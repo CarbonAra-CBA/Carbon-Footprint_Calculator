@@ -159,11 +159,26 @@ public class MainPage {
         }
     }
 
+    // url 형식을 갖추지 못했다면 https://www. 이 없다면 이를 맨 앞에 붙여주는 함수
+    private String fittingDomain(String urlDomain) {
+        if(urlDomain.contains("https://www.")) {
+            return urlDomain;
+        }
+        else {
+            if(urlDomain.contains("http://www.")) {
+                return urlDomain;
+            }
+            urlDomain = "https://www." + urlDomain;
+        }
+        return urlDomain;
+    }
+
+
     @PostMapping("/submit")
     public String processUrl(Model model, @ModelAttribute("Url") Url url, RedirectAttributes redirectAttributes,
                              HttpSession session) {
 
-        String urlDomain = url.getUrl();
+        String urlDomain = fittingDomain(url.getUrl());
         session.setAttribute("domain",urlDomain);
 
         try {
