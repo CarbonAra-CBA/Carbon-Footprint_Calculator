@@ -2,6 +2,6 @@
 This project is WebApp Carbon Calculater.  
 
 # Object
-Calculate Webpages about Eco-Friendly, Net-Zero.
+Calculate Web pages about Eco-Friendly, Net-Zero.
 
 # Contributor
